@@ -1,0 +1,214 @@
+{
+    "openai": [
+        {
+            "id": "gpt-4-turbo-preview",
+            "name": "GPT-4 Turbo",
+            "description": "Most capable GPT-4 model with 128k context",
+            "max_tokens": 4096,
+            "context_window": 128000,
+            "supports_vision": true,
+            "supports_function_calling": true
+        },
+        {
+            "id": "gpt-4o",
+            "name": "GPT-4o",
+            "description": "High-intelligence flagship model",
+            "max_tokens": 4096,
+            "context_window": 128000,
+            "supports_vision": true,
+            "supports_function_calling": true
+        },
+        {
+            "id": "gpt-3.5-turbo",
+            "name": "GPT-3.5 Turbo",
+            "description": "Fast and efficient model for most tasks",
+            "max_tokens": 4096,
+            "context_window": 16385,
+            "supports_vision": false,
+            "supports_function_calling": true
+        }
+    ],
+    "groq": [
+        {
+            "id": "llama3-70b-8192",
+            "name": "Llama3 70B",
+            "description": "Meta's latest Llama3 70B model optimized for speed",
+            "max_tokens": 8192,
+            "context_window": 8192,
+            "supports_vision": false,
+            "supports_function_calling": false
+        },
+        {
+            "id": "llama3-8b-8192",
+            "name": "Llama3 8B",
+            "description": "Meta's latest Llama3 8B model",
+            "max_tokens": 8192,
+            "context_window": 8192,
+            "supports_vision": false,
+            "supports_function_calling": false
+        },
+        {
+            "id": "mixtral-8x7b-32768",
+            "name": "Mixtral 8x7B",
+            "description": "Mistral's mixture of experts model",
+            "max_tokens": 32768,
+            "context_window": 32768,
+            "supports_vision": false,
+            "supports_function_calling": false
+        },
+        {
+            "id": "llama2-70b-4096",
+            "name": "Llama2 70B",
+            "description": "Meta's Llama2 70B model",
+            "max_tokens": 4096,
+            "context_window": 4096,
+            "supports_vision": false,
+            "supports_function_calling": false
+        }
+    ],
+    "gemini": [
+        {
+            "id": "gemini-1.5-pro",
+            "name": "Gemini 1.5 Pro",
+            "description": "Latest Gemini model with 1M token context",
+            "max_tokens": 8192,
+            "context_window": 1000000,
+            "supports_vision": true,
+            "supports_function_calling": true
+        },
+        {
+            "id": "gemini-pro",
+            "name": "Gemini Pro",
+            "description": "High-performance model for complex tasks",
+            "max_tokens": 8192,
+            "context_window": 32768,
+            "supports_vision": false,
+            "supports_function_calling": true
+        },
+        {
+            "id": "gemini-pro-vision",
+            "name": "Gemini Pro Vision",
+            "description": "Multimodal model with vision capabilities",
+            "max_tokens": 4096,
+            "context_window": 16384,
+            "supports_vision": true,
+            "supports_function_calling": false
+        }
+    ],
+    "anthropic": [
+        {
+            "id": "claude-3-opus-20240229",
+            "name": "Claude 3 Opus",
+            "description": "Most powerful Claude model",
+            "max_tokens": 4096,
+            "context_window": 200000,
+            "supports_vision": true,
+            "supports_function_calling": false
+        },
+        {
+            "id": "claude-3-sonnet-20240229",
+            "name": "Claude 3 Sonnet",
+            "description": "Balanced performance and speed",
+            "max_tokens": 4096,
+            "context_window": 200000,
+            "supports_vision": true,
+            "supports_function_calling": false
+        },
+        {
+            "id": "claude-3-haiku-20240307",
+            "name": "Claude 3 Haiku",
+            "description": "Fast and cost-effective model",
+            "max_tokens": 4096,
+            "context_window": 200000,
+            "supports_vision": true,
+            "supports_function_calling": false
+        }
+    ],
+    "cohere": [
+        {
+            "id": "command-r-plus",
+            "name": "Command R+",
+            "description": "Cohere's most capable model",
+            "max_tokens": 4096,
+            "context_window": 128000,
+            "supports_vision": false,
+            "supports_function_calling": true
+        },
+        {
+            "id": "command-r",
+            "name": "Command R",
+            "description": "Balanced model for most tasks",
+            "max_tokens": 4096,
+            "context_window": 128000,
+            "supports_vision": false,
+            "supports_function_calling": true
+        }
+    ],
+    "ollama": [
+        {
+            "id": "llama2",
+            "name": "Llama2 7B",
+            "description": "Meta's Llama2 model running locally",
+            "max_tokens": 2048,
+            "context_window": 4096,
+            "supports_vision": false,
+            "supports_function_calling": false
+        },
+        {
+            "id": "llama3",
+            "name": "Llama3 8B",
+            "description": "Meta's latest Llama3 model locally",
+            "max_tokens": 2048,
+            "context_window": 8192,
+            "supports_vision": false,
+            "supports_function_calling": false
+        },
+        {
+            "id": "codellama",
+            "name": "Code Llama",
+            "description": "Code-specialized Llama model",
+            "max_tokens": 2048,
+            "context_window": 4096,
+            "supports_vision": false,
+            "supports_function_calling": false
+        },
+        {
+            "id": "mistral",
+            "name": "Mistral 7B",
+            "description": "Mistral's 7B parameter model",
+            "max_tokens": 2048,
+            "context_window": 8192,
+            "supports_vision": false,
+            "supports_function_calling": false
+        },
+        {
+            "id": "phi3",
+            "name": "Phi-3",
+            "description": "Microsoft's compact yet capable model",
+            "max_tokens": 2048,
+            "context_window": 4096,
+            "supports_vision": false,
+            "supports_function_calling": false
+        }
+    ],
+    "huggingface": [
+        {
+            "id": "meta-llama/Llama-2-7b-chat-hf",
+            "name": "Llama 2 7B Chat",
+            "description": "Meta's Llama 2 chat model",
+            "max_tokens": 2048,
+            "context_window": 4096,
+            "supports_vision": false,
+            "supports_function_calling": false
+        },
+        {
+            "id": "microsoft/DialoGPT-medium",
+            "name": "DialoGPT Medium",
+            "description": "Microsoft's conversational model",
+            "max_tokens": 1024,
+            "context_window": 1024,
+            "supports_vision": false,
+            "supports_function_calling": false
+        }
+    ]
+}

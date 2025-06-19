@@ -1,0 +1,51 @@
+{
+    "openai": {
+        "name": "OpenAI",
+        "description": "Industry-leading GPT models from OpenAI",
+        "api_base_url": "https://api.openai.com/v1",
+        "requires_api_key": true,
+        "api_key_format": "sk-... (starts with 'sk-')"
+    },
+    "groq": {
+        "name": "Groq",
+        "description": "Ultra-fast inference with GroqChip technology",
+        "api_base_url": "https://api.groq.com/openai/v1",
+        "requires_api_key": true,
+        "api_key_format": "gsk_... (starts with 'gsk_')"
+    },
+    "gemini": {
+        "name": "Google Gemini",
+        "description": "Google's advanced multimodal AI models",
+        "api_base_url": "https://generativelanguage.googleapis.com/v1",
+        "requires_api_key": true,
+        "api_key_format": "AI... (starts with 'AI')"
+    },
+    "anthropic": {
+        "name": "Anthropic Claude",
+        "description": "Anthropic's helpful, harmless, and honest AI",
+        "api_base_url": "https://api.anthropic.com",
+        "requires_api_key": true,
+        "api_key_format": "sk-ant-... (starts with 'sk-ant-')"
+    },
+    "cohere": {
+        "name": "Cohere",
+        "description": "Enterprise-focused language models",
+        "api_base_url": "https://api.cohere.ai/v1",
+        "requires_api_key": true,
+        "api_key_format": "co-... (starts with 'co-')"
+    },
+    "ollama": {
+        "name": "Ollama",
+        "description": "Run large language models locally",
+        "api_base_url": "http://localhost:11434",
+        "requires_api_key": false,
+        "api_key_format": "No API key required (local)"
+    },
+    "huggingface": {
+        "name": "Hugging Face",
+        "description": "Open source models via Hugging Face",
+        "api_base_url": "https://api-inference.huggingface.co",
+        "requires_api_key": true,
+        "api_key_format": "hf_... (starts with 'hf_')"
+    }
+}
