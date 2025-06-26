@@ -1,4 +1,4 @@
-import { useGetAllProductQuery, type Product } from "../app/dummyData/dummyData";
+import { useGetAllProductQuery, type Product } from "../../services/api/dummyData/dummyData";
 
 const AllProducts = () => {
     const { data, isError, isLoading } = useGetAllProductQuery();

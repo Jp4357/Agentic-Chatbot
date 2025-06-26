@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ApiConstants } from "../../utils/constants/apiConstants";
+import { ApiConstants } from "../../../utils/constants/api_constants";
 
 // Types for Product and API responses
 export interface Product {

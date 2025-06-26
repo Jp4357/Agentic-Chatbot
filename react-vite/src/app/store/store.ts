@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { productsApi } from "../dummyData/dummyData";
-import counterSlice from "./counter/counterSlice";
+import { productsApi } from "../../services/api/dummyData/dummyData";
+import counterSlice from "../../features/counter/counterSlice";
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +11,13 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(productsApi.middleware),
 });
+
+
+//sampole request model python
+// ChatRequest(BaseModel):
+//     message: str
+//     api_key: str
+//     history: Optional[List[ChatMessage]] = []
 
 // Optional: For refetchOnFocus/refetchOnReconnect
 setupListeners(store.dispatch);

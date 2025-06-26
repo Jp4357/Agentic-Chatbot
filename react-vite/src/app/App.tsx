@@ -1,14 +1,13 @@
-import AllProducts from '../components/allProducts'
+import AllProducts from '../features/products/AllProducts'
 import ChatHomeScreen from '../pages/chat/ChatHomeScreen'
-import './App.css'
-
+import '../styles/App.css'
 function App() {
   return (
-    <AllProducts />
+    // <AllProducts />
     //    <SpecificProduct /> 
     //    <AddNewProduct /> 
     //  <UpdateProduct productId={4} /> 
-    // <ChatHomeScreen />
+    <ChatHomeScreen />
   )
 }
 

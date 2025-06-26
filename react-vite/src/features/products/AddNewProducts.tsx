@@ -1,4 +1,4 @@
-import { useAddNewProductMutation, type Product } from "../app/dummyData/dummyData";
+import { useAddNewProductMutation, type Product } from "../../services/api/dummyData/dummyData";
 
 
 const AddNewProduct = () => {

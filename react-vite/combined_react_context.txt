@@ -1,15 +1,14 @@
 -- ./src/app/App.tsx --
-import AllProducts from '../components/allProducts'
+import AllProducts from '../features/products/AllProducts'
 import ChatHomeScreen from '../pages/chat/ChatHomeScreen'
-import './App.css'
-
+import '../styles/App.css'
 function App() {
   return (
-    <AllProducts />
+    // <AllProducts />
     //    <SpecificProduct /> 
     //    <AddNewProduct /> 
     //  <UpdateProduct productId={4} /> 
-    // <ChatHomeScreen />
+    <ChatHomeScreen />
   )
 }
 
@@ -19,9 +18,10 @@ export default App
 -- ./src/app/main.tsx --
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css";
+import '../styles/index.css'
+import '../styles/App.css'
 import { Provider } from "react-redux";
-import { store } from "./features/store";
+import { store } from "./store/store";
 
 // Ensure root element exists and is not null
 const rootElement = document.getElementById("root");
@@ -36,51 +36,40 @@ if (rootElement) {
   throw new Error("Root element not found");
 }
 
--- ./src/app/features/counter/counterSlice.tsx --
-import { createSlice, } from "@reduxjs/toolkit";
+-- ./src/app/store/hooks.ts --
+import { useDispatch, useSelector } from 'react-redux';
+import type { TypedUseSelectorHook } from 'react-redux';
+import type { RootState, AppDispatch } from './store';
 
-// Define the shape of the slice state
-interface CounterState {
-    value: number;
-}
+// Use throughout your app instead of plain `useDispatch` and `useSelector`
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-// Initial state with proper type
-const initialState: CounterState = {
-    value: 0,
-};
+// Alternative export pattern (you can use either approach)
+export const useTypedDispatch = () => useDispatch<AppDispatch>();
+export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const counterSlice = createSlice({
-    name: "counter",
-    initialState,
-    reducers: {
-        increment: (state) => {
-            state.value += 1;
-        },
-        decrement: (state) => {
-            state.value -= 1;
-        },
-
-    },
-});
-
-// Export actions
-export const { increment, decrement } = counterSlice.actions;
-
-// Export reducer
-export default counterSlice.reducer;
-
--- ./src/app/features/store.ts --
+-- ./src/app/store/store.ts --
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { productsApi } from "../dummyData/dummyData";
+import { productsApi } from "../../services/api/dummyData/dummyData";
+import counterSlice from "../../features/counter/counterSlice";
 
 export const store = configureStore({
     reducer: {
         [productsApi.reducerPath]: productsApi.reducer,
+        counter: counterSlice, // Add the counter reducer here
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(productsApi.middleware),
 });
+
+
+//sampole request model python
+// ChatRequest(BaseModel):
+//     message: str
+//     api_key: str
+//     history: Optional[List[ChatMessage]] = []
 
 // Optional: For refetchOnFocus/refetchOnReconnect
 setupListeners(store.dispatch);
@@ -89,106 +78,8 @@ setupListeners(store.dispatch);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
--- ./src/app/App.css --
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-} */
-
-#root {
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-
-
-
--- ./src/app/index.css --
-@import "tailwindcss";
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-
--- ./src/app/dummyData/dummyData.ts --
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-// Types for Product and API responses
-export interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  [key: string]: any; // for flexibility, you can tighten this as needed
-}
-
-export interface ProductsResponse {
-  products: Product[];
-  total: number;
-  skip: number;
-  limit: number;
-}
-
-// API definition
-export const productsApi = createApi({
-  reducerPath: "products",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://dummyjson.com" }),
-  endpoints: (builder) => ({
-    getAllProduct: builder.query<ProductsResponse, void>({
-      query: () => "/products",
-    }),
-
-    getProductById: builder.query<Product, number>({
-      query: (id) => `/products/${id}`,
-    }),
-
-    addNewProduct: builder.mutation<Product, Partial<Product>>({
-      query: (newProduct) => ({
-        url: `/products/add`,
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: newProduct,
-      }),
-    }),
-
-    updateProduct: builder.mutation<Product, { id: number; updatedProduct: Partial<Product> }>({
-      query: ({ id, updatedProduct }) => ({
-        url: `/products/${id}`,
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: updatedProduct,
-      }),
-    }),
-
-    deleteProduct: builder.mutation<{ success: boolean }, number>({
-      query: (id) => ({
-        url: `/products/${id}`,
-        method: "DELETE",
-      }),
-    }),
-  }),
-});
-
-// Hooks auto-generated by RTK Query
-export const {
-  useGetAllProductQuery,
-  useGetProductByIdQuery,
-  useAddNewProductMutation,
-  useUpdateProductMutation,
-  useDeleteProductMutation,
-} = productsApi;
-
--- ./src/features/store.ts --
-
-
--- ./src/components/addNewProducts.tsx --
-import { useAddNewProductMutation, type Product } from "../app/dummyData/dummyData";
+-- ./src/features/products/AddNewProducts.tsx --
+import { useAddNewProductMutation, type Product } from "../../services/api/dummyData/dummyData";
 
 
 const AddNewProduct = () => {
@@ -231,14 +122,8 @@ const AddNewProduct = () => {
 
 export default AddNewProduct;
 
--- ./src/components/loaders.tsx --
-//  create a loader component that can be used to show a loading state
-import React from 'react';
-// import { Spinner } from 'react-bootstrap'; // Assuming you're using react-bootstrap for styling
-
-
--- ./src/components/allProducts.tsx --
-import { useGetAllProductQuery, type Product } from "../app/dummyData/dummyData";
+-- ./src/features/products/AllProducts.tsx --
+import { useGetAllProductQuery, type Product } from "../../services/api/dummyData/dummyData";
 
 const AllProducts = () => {
     const { data, isError, isLoading } = useGetAllProductQuery();
@@ -264,6 +149,119 @@ const AllProducts = () => {
 };
 
 export default AllProducts;
+
+-- ./src/features/auth/authSlice.ts --
+
+
+-- ./src/features/counter/Counter.tsx --
+import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks';
+import { increment, decrement } from './counterSlice';
+
+const Counter: React.FC = () => {
+    // Use the typed hooks instead of regular useSelector and useDispatch
+    const count = useAppSelector((state) => state.counter.value);
+    const dispatch = useAppDispatch();
+
+    return (
+        <div className="flex flex-col items-center space-y-4 p-6">
+            <h2 className="text-2xl font-bold">Counter: {count}</h2>
+            <div className="flex space-x-4">
+                <button
+                    onClick={() => dispatch(increment())}
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                    Increment
+                </button>
+                <button
+                    onClick={() => dispatch(decrement())}
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                >
+                    Decrement
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default Counter;
+
+-- ./src/features/counter/counterSlice.ts --
+import { createSlice, } from "@reduxjs/toolkit";
+
+// Define the shape of the slice state
+interface CounterState {
+    value: number;
+}
+
+// Initial state with proper type
+const initialState: CounterState = {
+    value: 0,
+};
+
+export const counterSlice = createSlice({
+    name: "counter",
+    initialState,
+    reducers: {
+        increment: (state) => {
+            state.value += 1;
+        },
+        decrement: (state) => {
+            state.value -= 1;
+        },
+
+    },
+});
+
+// Export actions
+export const { increment, decrement } = counterSlice.actions;
+
+// Export reducer
+export default counterSlice.reducer;
+
+-- ./src/utils/constants/api_constants.ts --
+export class ApiConstants {
+    static readonly DUMMY_JSON_BASE_URL = "https://dummyjson.com";
+}
+
+-- ./src/utils/constants/app_constants.ts --
+
+
+-- ./src/styles/App.css --
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+} */
+
+#root {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+-- ./src/styles/index.css --
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+
+-- ./src/components/ui/Loaders.tsx --
+//  create a loader component that can be used to show a loading state
+import React from 'react';
+// import { Spinner } from 'react-bootstrap'; // Assuming you're using react-bootstrap for styling
+
+
+-- ./src/components/ChatInput.tsx --
+
 
 -- ./src/vite-env.d.ts --
 /// <reference types="vite/client" />
@@ -453,4 +451,155 @@ const ChatHomeScreen = () => {
 };
 
 export default ChatHomeScreen;
+
+-- ./src/services/api/api_client.ts --
+
+
+
+-- ./src/services/api/dummyData/dummyData.ts --
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { ApiConstants } from "../../../utils/constants/api_constants";
+
+// Types for Product and API responses
+export interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  [key: string]: any; // for flexibility, you can tighten this as needed
+}
+
+export interface ProductsResponse {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
+// API definition with cache tags
+export const productsApi = createApi({
+  reducerPath: "products",
+  baseQuery: fetchBaseQuery({ baseUrl: ApiConstants.DUMMY_JSON_BASE_URL }),
+  tagTypes: ['Product'], // Define cache tags
+  endpoints: (builder) => ({
+    getAllProduct: builder.query<ProductsResponse, void>({
+      query: () => "/products",
+      providesTags: ['Product'], // This query provides Product tags
+    }),
+
+    getProductById: builder.query<Product, number>({
+      query: (id) => `/products/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Product', id }], // Specific product tag
+    }),
+
+    addNewProduct: builder.mutation<Product, Partial<Product>>({
+      query: (newProduct) => ({
+        url: `/products/add`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: newProduct,
+      }),
+      invalidatesTags: ['Product'], // Invalidate all Product queries when adding
+    }),
+
+    updateProduct: builder.mutation<Product, { id: number; updatedProduct: Partial<Product> }>({
+      query: ({ id, updatedProduct }) => ({
+        url: `/products/${id}`,
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: updatedProduct,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Product', id },
+        'Product' // Invalidate both specific product and all products list
+      ],
+    }),
+
+    deleteProduct: builder.mutation<{ success: boolean }, number>({
+      query: (id) => ({
+        url: `/products/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: 'Product', id },
+        'Product' // Invalidate both specific product and all products list
+      ],
+    }),
+  }),
+});
+
+// Hooks auto-generated by RTK Query
+export const {
+  useGetAllProductQuery,
+  useGetProductByIdQuery,
+  useAddNewProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+} = productsApi;
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+// // Types for Product and API responses
+// export interface Product {
+//   id: number;
+//   title: string;
+//   description: string;
+//   price: number;
+//   [key: string]: any; // for flexibility, you can tighten this as needed
+// }
+
+// export interface ProductsResponse {
+//   products: Product[];
+//   total: number;
+//   skip: number;
+//   limit: number;
+// }
+
+// // API definition
+// export const productsApi = createApi({
+//   reducerPath: "products",
+//   baseQuery: fetchBaseQuery({ baseUrl: "https://dummyjson.com" }),
+//   endpoints: (builder) => ({
+//     getAllProduct: builder.query<ProductsResponse, void>({
+//       query: () => "/products",
+//     }),
+
+//     getProductById: builder.query<Product, number>({
+//       query: (id) => `/products/${id}`,
+//     }),
+
+//     addNewProduct: builder.mutation<Product, Partial<Product>>({
+//       query: (newProduct) => ({
+//         url: `/products/add`,
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: newProduct,
+//       }),
+//     }),
+
+//     updateProduct: builder.mutation<Product, { id: number; updatedProduct: Partial<Product> }>({
+//       query: ({ id, updatedProduct }) => ({
+//         url: `/products/${id}`,
+//         method: "PUT",
+//         headers: { "Content-Type": "application/json" },
+//         body: updatedProduct,
+//       }),
+//     }),
+
+//     deleteProduct: builder.mutation<{ success: boolean }, number>({
+//       query: (id) => ({
+//         url: `/products/${id}`,
+//         method: "DELETE",
+//       }),
+//     }),
+//   }),
+// });
+
+// // Hooks auto-generated by RTK Query
+// export const {
+//   useGetAllProductQuery,
+//   useGetProductByIdQuery,
+//   useAddNewProductMutation,
+//   useUpdateProductMutation,
+//   useDeleteProductMutation,
+// } = productsApi;
 
